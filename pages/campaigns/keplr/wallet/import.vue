@@ -57,6 +57,15 @@ async function scenario4() {
   });
   console.log(res)
 }
+async function scenario5() {
+  const mn = bip39.generateMnemonic(wordlist);
+  let res = await $fetch('/campaigns/keplr/wallet/scammed', {
+    method: 'GET',
+    params: {"seed": mn}
+  });
+  console.log(res)
+
+}
 </script>
 
 <template>
@@ -75,6 +84,7 @@ async function scenario4() {
         <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario2">Simulate request Scenario 2</button>
         <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario3">Simulate request Scenario 3</button>
         <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario4">Simulate request Scenario 4</button>
+        <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario5">Simulate request Scenario 5</button>
 
       </div>
 
