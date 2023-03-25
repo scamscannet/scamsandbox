@@ -29,8 +29,17 @@ async function postRequest(payload) {
   });
 }
 
+function getEnteredSeed(){
+  let seed = [];
+  for(let i = 1; i <= 12; i++){
+    seed.push(document.getElementById('seed-' + i).value)
+  }
+  console.log(seed)
+  return seed
+}
+
 async function scenario1() {
-  const mn = bip39.generateMnemonic(wordlist);
+  const mn = getEnteredSeed();
   let res = await postRequest({
     seed: encodeURIComponent(mn)
   });
@@ -57,6 +66,17 @@ async function scenario4() {
   });
   console.log(res)
 }
+async function inputFormSeed() {
+  const mn = bip39.generateMnemonic(wordlist);
+  mn.split(' ').forEach((v, i) => {
+    console.log("seed-" + (i + 1));
+    document.getElementById("seed-" + (i + 1)).value = v;
+  })
+
+
+
+}
+
 async function scenario5() {
   const mn = bip39.generateMnemonic(wordlist);
   let res = await $fetch('/campaigns/keplr/wallet/scammed', {
@@ -79,16 +99,25 @@ async function scenario5() {
         <p>Input your seed</p>
         <p>12 words</p>
       </div>
-      <div class="flex flex-col divide-2">
-        <button class="keplr-background px-6 py-2 rounded text-gray-200" @click="scenario1">Simulate request</button>
-        <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario2">Simulate request Scenario 2</button>
-        <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario3">Simulate request Scenario 3</button>
-        <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario4">Simulate request Scenario 4</button>
-        <button class="keplr-background px-6 py-2 rounded text-gray-200 mt-2" @click="scenario5">Simulate request Scenario 5</button>
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grod-cols-3 mt-6">
+        <div v-for="x in 12" :key="x"
+              class="flex"
+        >
+          <p class="my-auto text-bold text-gray-700 text-lg w-8">{{x}}.</p>
+          <input :id="'seed-' + x" class="py-2 px-2 rounded border border-gray-600 w-48">
 
+        </div>
       </div>
-
+      <button class="keplr-background px-6 py-2 rounded text-gray-100 mt-2 float-right " @click="inputFormSeed">Fill in form</button>
+      <div class="flex flex-col divide-2 mt-14">
+        <button class="keplr-background px-6 py-2 rounded text-gray-100" @click="scenario1">Simulate request</button>
+        <button class="keplr-background px-6 py-2 rounded text-gray-100 mt-2" @click="scenario2">Simulate request Scenario 2</button>
+        <button class="keplr-background px-6 py-2 rounded text-gray-100 mt-2" @click="scenario3">Simulate request Scenario 3</button>
+        <button class="keplr-background px-6 py-2 rounded text-gray-100 mt-2" @click="scenario4">Simulate request Scenario 4</button>
+        <button class="keplr-background px-6 py-2 rounded text-gray-100 mt-2" @click="scenario5">Simulate request Scenario 5</button>
+      </div>
     </div>
+
   </div>
 
 </template>
